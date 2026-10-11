@@ -1,6 +1,6 @@
 # Third-party notices
 
-Icarus Server Mod Manager is released under the MIT License (see [LICENSE](LICENSE)).
+Icarus Easy Mod is released under the MIT License (see [LICENSE](LICENSE)).
 It builds on the work of others:
 
 ## NetPak (Apache-2.0)

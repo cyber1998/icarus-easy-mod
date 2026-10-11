@@ -12,7 +12,7 @@ import socket
 import sys
 from pathlib import Path
 
-APP_NAME = "Icarus Server Mod Manager"
+APP_NAME = "Icarus Easy Mod"
 DEFAULT_PORT = 8501
 
 THEME_ENV = {

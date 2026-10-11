@@ -1,4 +1,4 @@
-"""Streamlit UI for the Icarus Server Mod Manager."""
+"""Streamlit UI for Icarus Easy Mod."""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ DEFAULT_PORTS = {"FTP": 21, "FTPS": 21, "SFTP": 22}
 PAGE_SIZE = 25
 SIZE_CACHE_FILE = settings.CONFIG_DIR / "size_cache.json"
 
-st.set_page_config(page_title="Icarus Server Mod Manager", layout="wide")
+st.set_page_config(page_title="Icarus Easy Mod", layout="wide")
 
 _THEME_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rubik:wght@400;500;600&display=swap');
@@ -1112,7 +1112,7 @@ Manager). Files that do not exist in your game version are skipped and reported.
 
 ### Privacy
 Connection settings (protocol, host, port, username, folder path) and your local game
-folder are saved to `~/.icarus_server_mod_manager/config.json` only if you leave the
+folder are saved to `~/.icarus_easy_mod/config.json` only if you leave the
 remember checkbox on. The password is never written to disk.
 
 ### Credits
@@ -1125,7 +1125,7 @@ their original release links.
 
 def render_sidebar() -> str:
     with st.sidebar:
-        st.title("Icarus Mod Manager")
+        st.title("Icarus Easy Mod")
         st.caption("Dedicated-server mods, without the FTP client.")
         page = st.radio("Navigation", PAGES, label_visibility="collapsed")
         st.divider()

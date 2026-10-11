@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build the Linux tarball inside an Ubuntu 22.04 container (wide glibc baseline).
-# Requires Docker. Artifact: packaging/dist/IcarusServerModManager-<ver>-linux-x64.tar.gz
+# Requires Docker. Artifact: packaging/dist/IcarusEasyMod-<ver>-linux-x64.tar.gz
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -13,15 +13,15 @@ python3 -m venv /tmp/buildenv
 /tmp/buildenv/bin/pip install --quiet --upgrade pip
 /tmp/buildenv/bin/pip install --quiet -r requirements.txt pyinstaller
 /tmp/buildenv/bin/python -m PyInstaller --noconfirm --clean --distpath packaging/dist --workpath packaging/build packaging/app.spec
-/tmp/buildenv/bin/python packaging/smoke_test.py packaging/dist/IcarusServerModManager/IcarusServerModManager --port 8612
-packaging/dist/IcarusServerModManager/IcarusServerModManager --self-check
+/tmp/buildenv/bin/python packaging/smoke_test.py packaging/dist/IcarusEasyMod/IcarusEasyMod --port 8612
+packaging/dist/IcarusEasyMod/IcarusEasyMod --self-check
 '
 
-cp packaging/linux/run.sh packaging/dist/IcarusServerModManager/run.sh
-chmod +x packaging/dist/IcarusServerModManager/run.sh
-cp packaging/linux/icarus-server-mod-manager.desktop packaging/dist/IcarusServerModManager/
+cp packaging/linux/run.sh packaging/dist/IcarusEasyMod/run.sh
+chmod +x packaging/dist/IcarusEasyMod/run.sh
+cp packaging/linux/icarus-easy-mod.desktop packaging/dist/IcarusEasyMod/
 
 VERSION="$(sed -n 's/^__version__ = "\(.*\)"/\1/p' icarus_manager/__init__.py)"
-ARTIFACT="packaging/dist/IcarusServerModManager-${VERSION}-linux-x64.tar.gz"
-tar -C packaging/dist -czf "$ARTIFACT" IcarusServerModManager
+ARTIFACT="packaging/dist/IcarusEasyMod-${VERSION}-linux-x64.tar.gz"
+tar -C packaging/dist -czf "$ARTIFACT" IcarusEasyMod
 echo "Artifact: $ARTIFACT"

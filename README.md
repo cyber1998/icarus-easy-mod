@@ -1,4 +1,4 @@
-# Icarus Server Mod Manager
+# Icarus Easy Mod
 
 A friendly Streamlit app for managing mods on an Icarus dedicated server. Look up mods
 from the community database, download them, and push them to your server over FTP, FTPS,
@@ -10,9 +10,9 @@ Prebuilt versions bundle everything (no Python install required):
 
 | OS | File | How to run |
 |---|---|---|
-| Windows | `IcarusServerModManagerSetup-<version>.exe` | Run the installer; it creates Start Menu and optional desktop shortcuts |
-| Linux | `IcarusServerModManager-<version>-linux-x64.tar.gz` | Extract, then run `./run.sh` |
-| macOS | `IcarusServerModManager-<version>-macos-<arch>.tar.gz` | Extract, then run the `IcarusServerModManager` binary |
+| Windows | `IcarusEasyModSetup-<version>.exe` | Run the installer; it creates Start Menu and optional desktop shortcuts |
+| Linux | `IcarusEasyMod-<version>-linux-x64.tar.gz` | Extract, then run `./run.sh` |
+| macOS | `IcarusEasyMod-<version>-macos-<arch>.tar.gz` | Extract, then run the `IcarusEasyMod` binary |
 
 The app opens in your browser automatically. Keep the console window open while you use
 it - closing that window stops the app.
@@ -138,7 +138,7 @@ skips itself when there is no network access.
 ## Notes
 
 - Connection settings (host, port, username, folder) are optionally remembered in
-  `~/.icarus_server_mod_manager/config.json`. Passwords are never saved.
+  `~/.icarus_easy_mod/config.json`. Passwords are never saved.
 - SFTP connections trust the server's host key on first connect, like most simple SFTP clients.
 - Mod listings come from the community database at
   [projectdaedalus.app](https://www.projectdaedalus.app); downloads come from each mod's

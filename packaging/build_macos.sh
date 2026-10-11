@@ -26,12 +26,12 @@ fi
 
 "$PY" -m PyInstaller --noconfirm --clean --distpath packaging/dist --workpath packaging/build packaging/app.spec
 
-BINARY="packaging/dist/IcarusServerModManager/IcarusServerModManager"
+BINARY="packaging/dist/IcarusEasyMod/IcarusEasyMod"
 "$PY" packaging/smoke_test.py "$BINARY" --port 8611
 "$BINARY" --self-check
 
 VERSION="$("$PY" -c 'import icarus_manager; print(icarus_manager.__version__)')"
 ARCH="$(uname -m)"
-ARTIFACT="packaging/dist/IcarusServerModManager-${VERSION}-macos-${ARCH}.tar.gz"
-tar -C packaging/dist -czf "$ARTIFACT" IcarusServerModManager
+ARTIFACT="packaging/dist/IcarusEasyMod-${VERSION}-macos-${ARCH}.tar.gz"
+tar -C packaging/dist -czf "$ARTIFACT" IcarusEasyMod
 echo "Artifact: $ARTIFACT"

@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller spec for Icarus Server Mod Manager (onedir build).
+"""PyInstaller spec for Icarus Easy Mod (onedir build).
 
 Build from the project root:
     pyinstaller --noconfirm --clean --distpath packaging/dist --workpath packaging/build packaging/app.spec
@@ -51,7 +51,7 @@ exe = EXE(
     analysis.scripts,
     [],
     exclude_binaries=True,
-    name="IcarusServerModManager",
+    name="IcarusEasyMod",
     debug=False,
     strip=False,
     upx=False,
@@ -65,5 +65,5 @@ collect = COLLECT(
     analysis.datas,
     strip=False,
     upx=False,
-    name="IcarusServerModManager",
+    name="IcarusEasyMod",
 )

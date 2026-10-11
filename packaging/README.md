@@ -29,14 +29,14 @@ GitHub release automatically.
 
 ```bash
 ./packaging/build_macos.sh
-# -> packaging/dist/IcarusServerModManager-<ver>-macos-<arch>.tar.gz
+# -> packaging/dist/IcarusEasyMod-<ver>-macos-<arch>.tar.gz
 ```
 
 **Linux** (needs Docker; builds inside Ubuntu 22.04 for a wide glibc baseline):
 
 ```bash
 ./packaging/build_linux.sh
-# -> packaging/dist/IcarusServerModManager-<ver>-linux-x64.tar.gz
+# -> packaging/dist/IcarusEasyMod-<ver>-linux-x64.tar.gz
 ```
 
 On Linux you can also build natively without Docker (this is what CI uses):
@@ -49,8 +49,8 @@ On Linux you can also build natively without Docker (this is what CI uses):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File packaging\windows\build_windows.ps1
-# -> packaging/dist/IcarusServerModManager-<ver>-windows-x64.zip
-# -> packaging/dist/installer/IcarusServerModManagerSetup-<ver>.exe  (if Inno Setup is installed)
+# -> packaging/dist/IcarusEasyMod-<ver>-windows-x64.zip
+# -> packaging/dist/installer/IcarusEasyModSetup-<ver>.exe  (if Inno Setup is installed)
 ```
 
 Install Inno Setup with `winget install -e --id JRSoftware.InnoSetup` (the script will
@@ -71,6 +71,6 @@ Update `__version__` in `icarus_manager/__init__.py` and the two version strings
 - Expect ~240 MB unpacked / ~95 MB compressed per platform (Streamlit + pandas +
   pyarrow dominate).
 - PyInstaller cannot cross-compile; each OS must build its own binary (or use CI).
-- The packaged app keeps all user data in `~/.icarus_server_mod_manager` (settings,
+- The packaged app keeps all user data in `~/.icarus_easy_mod` (settings,
   size cache, base-data cache, Oodle runtime), so builds can live in read-only
   locations like `Program Files`.

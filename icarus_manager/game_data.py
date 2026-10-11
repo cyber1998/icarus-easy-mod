@@ -22,8 +22,8 @@ try:
 except ImportError:  # pragma: no cover
     repak = None
 
-CACHE_DIR = Path.home() / ".icarus_server_mod_manager" / "base_data"
-OODLE_CACHE_DIR = Path.home() / ".icarus_server_mod_manager" / "oodle"
+CACHE_DIR = Path.home() / ".icarus_easy_mod" / "base_data"
+OODLE_CACHE_DIR = Path.home() / ".icarus_easy_mod" / "oodle"
 OODLE_LIBRARY_NAMES = {
     "win32": "oo2core_9_win64.dll",
     "linux": "liboo2corelinux64.so.9",

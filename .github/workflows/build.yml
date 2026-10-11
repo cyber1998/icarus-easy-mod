@@ -39,7 +39,7 @@ jobs:
       - name: Ensure installer exists (fallback)
         shell: pwsh
         run: |
-          if (-not (Test-Path "packaging\dist\installer\IcarusServerModManagerSetup-*.exe")) {
+          if (-not (Test-Path "packaging\dist\installer\IcarusEasyModSetup-*.exe")) {
             choco install innosetup -y --no-progress
             $version = (& python -c "import icarus_manager; print(icarus_manager.__version__)").Trim()
             & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$version" "packaging\windows\installer.iss"
@@ -48,8 +48,8 @@ jobs:
         with:
           name: windows-build
           path: |
-            packaging/dist/IcarusServerModManager-*-windows-x64.zip
-            packaging/dist/installer/IcarusServerModManagerSetup-*.exe
+            packaging/dist/IcarusEasyMod-*-windows-x64.zip
+            packaging/dist/installer/IcarusEasyModSetup-*.exe
 
   linux:
     name: Linux (portable tarball)
@@ -67,7 +67,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: linux-build
-          path: packaging/dist/IcarusServerModManager-*-linux-x64.tar.gz
+          path: packaging/dist/IcarusEasyMod-*-linux-x64.tar.gz
 
   macos:
     name: macOS (portable tarball)
@@ -85,7 +85,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: packaging/dist/IcarusServerModManager-*-macos-*.tar.gz
+          path: packaging/dist/IcarusEasyMod-*-macos-*.tar.gz
 
   release:
     name: Attach artifacts to release

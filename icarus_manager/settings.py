@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-CONFIG_DIR = Path.home() / ".icarus_server_mod_manager"
+CONFIG_DIR = Path.home() / ".icarus_easy_mod"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 PROFILE_FIELDS = ("protocol", "host", "port", "username", "remote_path", "local_mods_path")
 

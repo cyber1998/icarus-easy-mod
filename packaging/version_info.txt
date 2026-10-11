@@ -16,12 +16,12 @@ VSVersionInfo(
         StringTable(
           '040904B0',
           [
-            StringStruct('CompanyName', 'Icarus Server Mod Manager'),
-            StringStruct('FileDescription', 'Icarus Server Mod Manager'),
+            StringStruct('CompanyName', 'Icarus Easy Mod'),
+            StringStruct('FileDescription', 'Icarus Easy Mod'),
             StringStruct('FileVersion', '0.3.0'),
-            StringStruct('InternalName', 'IcarusServerModManager'),
-            StringStruct('OriginalFilename', 'IcarusServerModManager.exe'),
-            StringStruct('ProductName', 'Icarus Server Mod Manager'),
+            StringStruct('InternalName', 'IcarusEasyMod'),
+            StringStruct('OriginalFilename', 'IcarusEasyMod.exe'),
+            StringStruct('ProductName', 'Icarus Easy Mod'),
             StringStruct('ProductVersion', '0.3.0')
           ]
         )
