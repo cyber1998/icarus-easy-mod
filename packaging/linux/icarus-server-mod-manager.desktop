@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Icarus Server Mod Manager
+Comment=Install and manage Icarus dedicated-server mods without an FTP client
+Icon=icarus-server-mod-manager
+Exec=/FULL/PATH/TO/IcarusServerModManager/run.sh
+Terminal=true
+Categories=Game;Utility;

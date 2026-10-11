@@ -1,0 +1,104 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run tests
+        run: python -m unittest discover -s tests
+
+  windows:
+    name: Windows (installer + portable zip)
+    runs-on: windows-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Build
+        shell: pwsh
+        run: powershell -ExecutionPolicy Bypass -File packaging\windows\build_windows.ps1
+      - name: Ensure installer exists (fallback)
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "packaging\dist\installer\IcarusServerModManagerSetup-*.exe")) {
+            choco install innosetup -y --no-progress
+            $version = (& python -c "import icarus_manager; print(icarus_manager.__version__)").Trim()
+            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$version" "packaging\windows\installer.iss"
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            packaging/dist/IcarusServerModManager-*-windows-x64.zip
+            packaging/dist/installer/IcarusServerModManagerSetup-*.exe
+
+  linux:
+    name: Linux (portable tarball)
+    runs-on: ubuntu-22.04
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Build
+        run: PY="$(command -v python)" ./packaging/build_linux_native.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: packaging/dist/IcarusServerModManager-*-linux-x64.tar.gz
+
+  macos:
+    name: macOS (portable tarball)
+    runs-on: macos-14
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Build
+        run: PY="$(command -v python)" ./packaging/build_macos.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: packaging/dist/IcarusServerModManager-*-macos-*.tar.gz
+
+  release:
+    name: Attach artifacts to release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [windows, linux, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
