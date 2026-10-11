@@ -3,13 +3,19 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-PY="${PY:-.venv/bin/python}"
-if [ ! -x "$PY" ]; then
-  echo "Python venv not found at $PY. Create it with: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt"
-  exit 1
+PY="${PY:-}"
+if [ -z "$PY" ]; then
+  if [ -x ".venv/bin/python" ]; then
+    PY=".venv/bin/python"
+  else
+    echo "No venv found; creating .venv-build ..."
+    python3 -m venv .venv-build
+    PY=".venv-build/bin/python"
+  fi
 fi
 
-"$PY" -m pip install --quiet pyinstaller
+"$PY" -m pip install --quiet --upgrade pip
+"$PY" -m pip install --quiet -r requirements.txt pyinstaller
 
 if [ ! -f packaging/icon.icns ]; then
   echo "Generating packaging/icon.icns ..."
