@@ -19,11 +19,12 @@ Python, and the app opens in their browser when launched.
 
 Artifacts land in `packaging/dist/`.
 
-**Windows without a Windows machine:** push this project to GitHub and run the
-`Build` workflow (Actions tab -> Build -> Run workflow). It builds Windows (installer +
-portable zip), Linux and macOS on real machines in the cloud and uploads everything as
-downloadable artifacts. Pushing a tag like `v0.3.0` also attaches the artifacts to a
-GitHub release automatically.
+**Windows without a Windows machine:** push this project to GitHub. The `Build`
+workflow runs on every push to `main`: it runs the unit tests, then builds Windows
+(installer + portable zip), Linux and macOS on real machines in the cloud. If the
+version in `icarus_manager/__init__.py` has not been released yet, it automatically
+publishes a GitHub release with all platform builds and `SHA256SUMS.txt`. Re-runs for
+an already released version are a no-op, and pushing a `v*` tag works too.
 
 **macOS** (validates the whole recipe; also a usable build):
 
@@ -62,7 +63,9 @@ binary, so a broken bundle fails the build instead of shipping.
 ## Version bumps
 
 Update `__version__` in `icarus_manager/__init__.py` and the two version strings in
-`packaging/version_info.txt`.
+`packaging/version_info.txt`, then commit to `main`. The release workflow publishes
+`v<version>` automatically with all platform builds, install instructions and
+checksums (`packaging/release_notes_template.md` is the release body template).
 
 ## Notes
 

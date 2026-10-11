@@ -6,7 +6,8 @@ or SFTP with one click. No separate FTP client needed.
 
 ## Install & run
 
-Prebuilt versions bundle everything (no Python install required):
+Grab the latest build from the [Releases page](../../releases/latest) - prebuilt versions
+bundle everything (no Python install required):
 
 | OS | File | How to run |
 |---|---|---|

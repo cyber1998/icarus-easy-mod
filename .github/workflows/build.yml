@@ -3,6 +3,8 @@ name: Build
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - "v*"
 
@@ -88,17 +90,67 @@ jobs:
           path: packaging/dist/IcarusEasyMod-*-macos-*.tar.gz
 
   release:
-    name: Attach artifacts to release
-    if: startsWith(github.ref, 'refs/tags/')
+    name: Publish versioned release
+    if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     needs: [windows, linux, macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve version
+        id: version
+        run: |
+          VERSION=$(sed -n 's/^__version__ = "\(.*\)"/\1/p' icarus_manager/__init__.py)
+          if [ -z "$VERSION" ]; then
+            echo "Could not read __version__ from icarus_manager/__init__.py"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - name: Skip when this version was already released
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/download-artifact@v4
+        if: steps.check.outputs.skip == 'false'
         with:
           path: artifacts
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: artifacts/**/*
-          generate_release_notes: true
+      - name: Assemble assets and release notes
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          mkdir -p release-assets
+          find artifacts -type f \( -name "*.exe" -o -name "*.zip" -o -name "*.tar.gz" \) -exec cp {} release-assets/ \;
+          cd release-assets && sha256sum * > SHA256SUMS.txt && cd ..
+
+          VERSION="${{ steps.version.outputs.version }}"
+          sed "s/{{VERSION}}/$VERSION/g" packaging/release_notes_template.md > release-notes.md
+          PREV=$(git tag --sort=-v:refname | grep -v "^v$VERSION$" | head -1 || true)
+          {
+            echo ""
+            echo "## Changes"
+            echo ""
+            if [ -n "$PREV" ]; then
+              git log -n 50 "$PREV..HEAD" --no-merges --pretty="- %s"
+            else
+              git log -n 50 HEAD --no-merges --pretty="- %s"
+            fi
+          } >> release-notes.md
+      - name: Publish release
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            gh release create "$TAG" --title "Icarus Easy Mod $TAG" --notes-file release-notes.md release-assets/*
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "Icarus Easy Mod $TAG" --notes-file release-notes.md release-assets/*
+          fi
